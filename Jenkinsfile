@@ -1,11 +1,16 @@
 pipeline {
-    agent { docker { image 'python:3.7.3-stretch' } }  // The user jenkins needs to be added to the group docker: sudo usermod -a -G docker jenkins
+    agent { 
+    	docker {
+    			image 'python:3.7.3-stretch'
+    			args '-u root'  // run as user root in the docker container
+    		}
+    	}  // The user jenkins needs to be added to the group docker: sudo usermod -a -G docker jenkins
     stages {
         stage('prepare') {
             steps {
                 sh 'python --version'
                 sh 'pip --version'
-                sh 'sudo pip install --trusted-host pypi.python.org -r requirements.txt'
+                sh 'pip install --trusted-host pypi.python.org -r requirements.txt'
             }
         }
         stage('verify') {
