@@ -18,11 +18,9 @@ pipeline {
         stage('run') {
             steps {
             	echo "verify python environment"
-            	script {
-					sh 'python --version'
-					sh 'pip --version'
-					sh 'pip install --trusted-host pypi.python.org -r requirements.txt'
-            	}
+				sh 'python --version'
+				sh 'pip --version'
+				sh 'pip install --trusted-host pypi.python.org -r requirements.txt'
             }
             steps {
             	sh 'python main.py'
