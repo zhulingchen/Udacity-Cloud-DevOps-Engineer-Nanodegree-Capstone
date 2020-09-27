@@ -20,8 +20,6 @@ pipeline {
 				sh 'python --version'
 				sh 'pip --version'
 				sh 'pip install --trusted-host pypi.python.org -r requirements.txt'
-            }
-            steps {
             	sh 'python main.py'
             }
         }
