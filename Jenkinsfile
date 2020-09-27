@@ -21,9 +21,9 @@ pipeline {
 				sh 'pip --version'
 				withEnv(["HOME=${env.WORKSPACE}"]) {
 					sh 'pip install --user -r requirements.txt'
+					echo 'test running the python code'
+					sh 'python main.py'
 				}  // https://stackoverflow.com/a/51688905
-				echo 'test running the python code'
-				sh 'python main.py'
 				echo 'install aws-cli v2'
 				sh 'curl https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip -o awscliv2.zip'
 				sh 'unzip -q awscliv2.zip'
