@@ -1,5 +1,4 @@
 // The user jenkins needs to be added to the group docker: sudo usermod -a -G docker jenkins
-@Library('github.com/releaseworks/jenkinslib') _
 pipeline {
 	agent none
     stages {
@@ -23,8 +22,8 @@ pipeline {
 				sh 'pip --version'
 				sh 'pip install --trusted-host pypi.python.org -r requirements.txt'
 				sh 'python main.py'
-				withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'aws-key', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY']]) {
-					AWS("--region=us-east-2 s3 ls")
+				withAWS(credentials: 'aws-credentials', region: 'us-east-2') {
+				    sh 'aws iam get-user'
 				}
             }
         }
