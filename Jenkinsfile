@@ -5,7 +5,7 @@ pipeline {
             steps {
                 sh 'python --version'
                 sh 'pip --version'
-                sh 'pip install --trusted-host pypi.python.org -r requirements.txt'
+                sh 'sudo pip install --trusted-host pypi.python.org -r requirements.txt'
             }
         }
         stage('verify') {
