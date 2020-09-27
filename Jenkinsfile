@@ -1,6 +1,6 @@
 Jenkinsfile (Declarative Pipeline)
 pipeline {
-    agent { docker { image 'python:3.7.3-stretch' } }
+    agent { docker { image 'python:3.7.3-stretch' } }  // The user jenkins needs to be added to the group docker: sudo usermod -a -G docker jenkins
     stages {
         stage('build') {
             steps {
@@ -10,7 +10,9 @@ pipeline {
 
         stage('test') {
             steps {
-                echo 'Hello, world!'
+            	echo 'Hello, world!'
+            	pwd
+            	ls -la
             }
         }
     }
