@@ -10,8 +10,8 @@ pipeline {
         stage('test') {
             steps {
             	echo 'Hello, world!'
-            	pwd
-            	ls -la
+            	sh 'pwd'
+            	sh 'ls -la'
             }
         }
     }
