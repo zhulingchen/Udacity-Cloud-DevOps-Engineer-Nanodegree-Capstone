@@ -1,6 +1,11 @@
 // The user jenkins needs to be added to the group docker: sudo usermod -a -G docker jenkins
 pipeline {
-	agent none
+    agent {
+    	docker {
+    		image 'python:3.7.3-stretch'
+			args '-u root'  // run as user root in the docker container
+    	}
+    }
     stages {
         stage('verify') {
         	agent any
@@ -11,12 +16,6 @@ pipeline {
             }
         }
         stage('run') {
-		    agent {
-		    	docker {
-		    		image 'python:3.7.3-stretch'
-	    			args '-u root'  // run as user root in the docker container
-		    	}
-		    }
             steps {
             	echo "verify python environment"
             	script {
