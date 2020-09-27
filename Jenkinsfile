@@ -13,7 +13,7 @@ pipeline {
 		    agent {
 		    	docker {
 		    		image 'python:3.7.3-stretch'
-					args '-u $(id -u ${USER}):$(id -g ${USER})'
+					args '-u ubuntu'
 		    	}
 		    }
             steps {
