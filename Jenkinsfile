@@ -2,15 +2,14 @@
 pipeline {
 	agent none
     stages {
-        stage('verify') {
+        stage('verify the build system') {
         	agent any
             steps {
-            	echo 'Hello, world!'
             	sh 'pwd'
-            	sh 'ls -Rla'
+            	sh 'ls -la'
             }
         }
-        stage('run') {
+        stage('prepare python environment') {
 		    agent {
 		    	docker {
 		    		image 'python:3.7.3-stretch'
@@ -22,7 +21,19 @@ pipeline {
 				sh 'python --version'
 				sh 'pip --version'
 				sh 'pip install --trusted-host pypi.python.org -r requirements.txt'
-            	sh 'python main.py'
+				sh 'python main.py'
+            }
+        }
+        stage('prepare aws-cli environment') {
+		    agent {
+		    	docker {
+		    		image 'amazon/aws-cli'
+					args '-u root'  // run as user root in the docker container
+		    	}
+		    }
+            steps {
+            	echo 'verify aws-cli environment'
+				sh 'aws --version'
             }
         }
     }
