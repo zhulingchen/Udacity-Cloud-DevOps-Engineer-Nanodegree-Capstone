@@ -13,21 +13,18 @@ pipeline {
 		    agent {
 		    	docker {
 		    		image 'python:3.7.3-stretch'
-					args '-u root'  // run as user root in the docker container
 		    	}
 		    }
             steps {
             	echo 'verify python environment'
 				sh 'python --version'
 				sh 'pip --version'
-				sh 'pip install --trusted-host pypi.python.org -r requirements.txt'
+				sh 'pip install --user --trusted-host pypi.python.org -r requirements.txt'
 				echo 'test running the python code'
 				sh 'python main.py'
 				echo 'install aws-cli v2'
-				sh 'cd ~/'
-				sh 'pwd'
 				sh 'curl https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip -o awscliv2.zip'
-				sh 'unzip awscliv2.zip'
+				sh 'unzip -q awscliv2.zip'
 				sh './aws/install'
 				echo 'test aws-cli v2'
 				withAWS(credentials: 'aws-credentials', region: 'us-east-2') {
