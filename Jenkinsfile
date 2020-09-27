@@ -19,11 +19,9 @@ pipeline {
             	echo 'verify python environment'
 				sh 'python --version'
 				sh 'pip --version'
-				sh 'python -m venv ./devops'
-				sh '. ./devops/bin/activate'
-				sh 'which python'
-				sh 'which pip'
-				sh 'pip install --trusted-host pypi.python.org -r requirements.txt'
+				withEnv(["HOME=${env.WORKSPACE}"]) {
+					sh 'pip install --user -r requirements.txt'
+				}  // https://stackoverflow.com/a/51688905
 				echo 'test running the python code'
 				sh 'python main.py'
 				echo 'install aws-cli v2'
