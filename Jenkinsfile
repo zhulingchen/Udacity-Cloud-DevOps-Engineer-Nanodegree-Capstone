@@ -1,4 +1,3 @@
-Jenkinsfile (Declarative Pipeline)
 pipeline {
     agent { docker { image 'python:3.7.3-stretch' } }  // The user jenkins needs to be added to the group docker: sudo usermod -a -G docker jenkins
     stages {
