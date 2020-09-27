@@ -23,11 +23,9 @@ pipeline {
 				sh 'pip install --trusted-host pypi.python.org -r requirements.txt'
 				echo 'test running the python code'
 				sh 'python main.py'
-				echo 'install aws-cli v2'
-				sh 'curl https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip -o awscliv2.zip'
-				sh 'unzip awscliv2.zip'
-				sh './aws/install'
-				echo 'test aws-cli v2'
+				echo 'install aws-cli v1'
+				sh 'pip install awscli'
+				echo 'test aws-cli v1'
 				withAWS(credentials: 'aws-credentials', region: 'us-east-2') {
 				    sh 'aws iam get-user'
 				}  // see https://support.cloudbees.com/hc/en-us/articles/360027893492-How-To-Authenticate-to-AWS-with-the-Pipeline-AWS-Plugin
