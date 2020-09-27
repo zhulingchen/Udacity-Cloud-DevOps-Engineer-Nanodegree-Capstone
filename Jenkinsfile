@@ -8,7 +8,6 @@ pipeline {
     }
     stages {
         stage('verify') {
-        	agent any
             steps {
             	echo 'Hello, world!'
             	sh 'pwd'
@@ -17,7 +16,7 @@ pipeline {
         }
         stage('run') {
             steps {
-            	echo "verify python environment"
+            	echo 'verify python environment'
 				sh 'python --version'
 				sh 'pip --version'
 				sh 'pip install --trusted-host pypi.python.org -r requirements.txt'
