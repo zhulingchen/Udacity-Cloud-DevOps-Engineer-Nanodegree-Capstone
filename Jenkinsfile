@@ -23,7 +23,7 @@ pipeline {
 				withEnv(["HOME=${env.WORKSPACE}"]) {
 					sh 'pip3 install --user -r requirements.txt'
 					echo 'test running the gunicorn server'
-					sh '.local/bin/gunicorn --bind 0.0.0.0:8080 --workers 4 myapp:application'
+					sh '.local/bin/gunicorn --bind 0.0.0.0:8080 --workers 4 myapp:app'
 				}  // https://stackoverflow.com/a/51688905
             }
         }
