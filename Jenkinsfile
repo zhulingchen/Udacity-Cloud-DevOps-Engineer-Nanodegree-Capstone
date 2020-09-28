@@ -15,16 +15,16 @@ pipeline {
             	echo 'verify python environment'
 				sh 'python3 --version'
 				sh 'pip3 --version'
-				withEnv(["HOME=${env.WORKSPACE}"]) {
-					sh 'pip3 install --user -r requirements.txt'
-					echo 'test running the python code'
-					sh 'python3 main.py'
-				}  // https://stackoverflow.com/a/51688905
 				echo 'test aws-cli v2'
 				withAWS(credentials: 'aws-credentials', region: 'us-east-2') {
 					sh 'aws --version'
 				    sh 'aws iam get-user'
 				}  // see https://support.cloudbees.com/hc/en-us/articles/360027893492-How-To-Authenticate-to-AWS-with-the-Pipeline-AWS-Plugin
+				withEnv(["HOME=${env.WORKSPACE}"]) {
+					sh 'pip3 install --user -r requirements.txt'
+					echo 'test running the gunicorn server'
+					sh 'gunicorn --bind 0.0.0.0:8080 --workers 4 myapp:application'
+				}  // https://stackoverflow.com/a/51688905
             }
         }
     }
