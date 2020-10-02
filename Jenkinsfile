@@ -8,23 +8,24 @@ pipeline {
             steps {
             	sh 'pwd'
             	sh 'ls -la'
-            }
-        }
-        stage('prepare python environment') {
-            steps {
             	echo 'verify python environment'
 				sh 'python3 --version'
 				sh 'pip3 --version'
-				echo 'test aws-cli v2'
-				withAWS(credentials: 'aws-credentials', region: 'us-east-2') {
-					sh 'aws --version'
-				    sh 'aws iam get-user'
-				}  // see https://support.cloudbees.com/hc/en-us/articles/360027893492-How-To-Authenticate-to-AWS-with-the-Pipeline-AWS-Plugin
+            }
+        }
+        state('test aws-cli v2') {
+			withAWS(credentials: 'aws-credentials', region: 'us-east-2') {
+				sh 'aws --version'
+			    sh 'aws iam get-user'
+			}  // see https://support.cloudbees.com/hc/en-us/articles/360027893492-How-To-Authenticate-to-AWS-with-the-Pipeline-AWS-Plugin
+        }
+        stage('linting') {
+            steps {
 				withEnv(["HOME=${env.WORKSPACE}"]) {
 					sh 'pip3 install --user -r requirements.txt'
 					echo 'test running the gunicorn server'
-					sh '.local/bin/gunicorn --bind 0.0.0.0:8080 --workers 4 myapp:app &'
-				}  // https://stackoverflow.com/a/51688905
+					sh 'pylint --disable=R,C,W1203 myapp.py'
+				}  // see https://stackoverflow.com/a/51688905
             }
         }
     }
