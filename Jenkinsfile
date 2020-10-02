@@ -13,7 +13,7 @@ pipeline {
 				sh 'pip3 --version'
             }
         }
-        state('test aws-cli v2') {
+        stage('test aws-cli v2') {
 			withAWS(credentials: 'aws-credentials', region: 'us-east-2') {
 				sh 'aws --version'
 			    sh 'aws iam get-user'
