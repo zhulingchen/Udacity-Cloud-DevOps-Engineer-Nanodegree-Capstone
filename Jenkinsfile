@@ -14,10 +14,12 @@ pipeline {
             }
         }
         stage('test aws-cli v2') {
-			withAWS(credentials: 'aws-credentials', region: 'us-east-2') {
-				sh 'aws --version'
-			    sh 'aws iam get-user'
-			}  // see https://support.cloudbees.com/hc/en-us/articles/360027893492-How-To-Authenticate-to-AWS-with-the-Pipeline-AWS-Plugin
+        	steps {
+				withAWS(credentials: 'aws-credentials', region: 'us-east-2') {
+					sh 'aws --version'
+				    sh 'aws iam get-user'
+				}  // see https://support.cloudbees.com/hc/en-us/articles/360027893492-How-To-Authenticate-to-AWS-with-the-Pipeline-AWS-Plugin
+        	}
         }
         stage('linting') {
             steps {
