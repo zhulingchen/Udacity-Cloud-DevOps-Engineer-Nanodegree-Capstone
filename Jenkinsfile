@@ -27,13 +27,16 @@ pipeline {
         stage('lint') {
             steps {
             	dir("myapp"){
-					sh 'pwd'
-					sh 'cat Makefile'
-					sh 'make env'
-					//sh 'which python'
-					//sh 'which pip'
-					sh 'make install'
-					sh 'make lint'
+					//sh 'pwd'
+					//sh 'cat Makefile'
+					sh """
+					python3 -m venv devops
+					. devops/bin/activate
+					which python
+					which pip
+					make install
+					make lint
+					""" // https://stackoverflow.com/a/40937525
             	}  // see https://stackoverflow.com/a/52372748
             }
         }

@@ -1,7 +1,3 @@
-env:
-	python3 -m venv devops
-	. devops/bin/activate
-
 install:
 	# This should be run from inside a virtualenv
 	pip install --upgrade pip
