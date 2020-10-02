@@ -16,7 +16,7 @@ pipeline {
 				}  // see https://stackoverflow.com/a/51688905
             }
         }
-        stage('test aws-cli v2') {
+        stage('verify aws-cli v2') {
         	steps {
 				withAWS(credentials: 'aws-credentials', region: 'us-east-2') {
 					sh 'aws --version'
@@ -36,8 +36,14 @@ pipeline {
 					make lint
 					""" // https://stackoverflow.com/a/40937525
             	}  // see https://stackoverflow.com/a/52372748
-            	sh 'docker build --tag=udacity-cloud-devops-capstone .'
-            	sh 'docker image ls'
+            }
+        }
+        stage('build docker image') {
+            steps {
+            	dir("myapp"){
+	            	sh 'docker build --tag=udacity-cloud-devops-capstone .'
+	            	sh 'docker image ls'
+            	}
             }
         }
     }
