@@ -27,6 +27,8 @@ pipeline {
         stage('lint') {
             steps {
 				sh 'cd myapp'
+				sh 'pwd'
+				sh 'cat Makefile'
 				sh 'make env'
 				sh 'which pip'
 				sh 'make install'
