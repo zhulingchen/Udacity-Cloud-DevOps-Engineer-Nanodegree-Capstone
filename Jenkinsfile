@@ -32,8 +32,6 @@ pipeline {
 					sh """
 					python3 -m venv devops
 					. devops/bin/activate
-					which python
-					which pip
 					make install
 					make lint
 					""" // https://stackoverflow.com/a/40937525
