@@ -6,7 +6,6 @@ pipeline {
     stages {
         stage('verify the build system') {
             steps {
-            	echo 'workspace path is ${WORKSPACE}'
             	sh 'pwd'
             	sh 'ls -la'
             	echo 'verify python environment'
@@ -24,11 +23,10 @@ pipeline {
         }
         stage('linting') {
             steps {
-				withEnv(["HOME=${env.WORKSPACE}"]) {
+				withEnv(["HOME=${env.WORKSPACE}", "PATH=$PATH:${env.WORKSPACE}/.local/bin"]) {
 					sh 'pip3 install --user -r requirements.txt'
 					echo 'test running the gunicorn server'
-					sh 'export PATH=$PATH:${WORKSPACE}/.local/bin'
-					sh 'printenv | grep PATH '
+					sh 'printenv'
 					sh 'pylint --disable=R,C,W1203 myapp.py'
 				}  // see https://stackoverflow.com/a/51688905
             }
