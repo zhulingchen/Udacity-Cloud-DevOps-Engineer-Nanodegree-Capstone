@@ -36,6 +36,8 @@ pipeline {
 					make lint
 					""" // https://stackoverflow.com/a/40937525
             	}  // see https://stackoverflow.com/a/52372748
+            	sh 'docker build --tag=udacity-cloud-devops-capstone .'
+            	sh 'docker image ls'
             }
         }
     }
