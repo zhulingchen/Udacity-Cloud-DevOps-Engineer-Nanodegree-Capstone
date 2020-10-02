@@ -26,13 +26,15 @@ pipeline {
         }
         stage('lint') {
             steps {
-				sh 'cd myapp'
-				sh 'pwd'
-				sh 'cat Makefile'
-				sh 'make env'
-				sh 'which pip'
-				sh 'make install'
-				sh 'make lint'
+            	dir("myapp"){
+					sh 'pwd'
+					sh 'cat Makefile'
+					sh 'make env'
+					sh 'which python'
+					sh 'which pip'
+					sh 'make install'
+					sh 'make lint'
+            	}  // see https://stackoverflow.com/a/52372748
             }
         }
     }

@@ -1,6 +1,6 @@
 env:
 	python3 -m venv devops
-	source devops/bin/activate
+	. devops/bin/activate
 
 install:
 	# This should be run from inside a virtualenv
