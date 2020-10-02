@@ -11,6 +11,9 @@ pipeline {
             	echo 'verify python environment'
 				sh 'python3 --version'
 				sh 'pip3 --version'
+				withEnv(["HOME=${env.WORKSPACE}"]) {
+					sh 'printenv'
+				}  // see https://stackoverflow.com/a/51688905
             }
         }
         stage('test aws-cli v2') {
@@ -21,14 +24,13 @@ pipeline {
 				}  // see https://support.cloudbees.com/hc/en-us/articles/360027893492-How-To-Authenticate-to-AWS-with-the-Pipeline-AWS-Plugin
         	}
         }
-        stage('linting') {
+        stage('lint') {
             steps {
-				withEnv(["HOME=${env.WORKSPACE}", "PATH=$PATH:${env.WORKSPACE}/.local/bin"]) {
-					sh 'pip3 install --user -r requirements.txt'
-					echo 'test running the gunicorn server'
-					sh 'printenv'
-					sh 'pylint --disable=R,C,W1203 myapp.py'
-				}  // see https://stackoverflow.com/a/51688905
+				sh 'cd myapp'
+				sh 'make env'
+				sh 'which pip'
+				sh 'make install'
+				sh 'make lint'
             }
         }
     }

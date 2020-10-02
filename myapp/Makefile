@@ -1,0 +1,12 @@
+env:
+	python3 -m venv devops
+	source devops/bin/activate
+
+install:
+	# This should be run from inside a virtualenv
+	pip install --upgrade pip
+	pip install -r requirements.txt
+
+lint:
+	pylint --disable=R,C,W1203 myapp.py
+	pylint --disable=R,C,W1203 wsgi.py
