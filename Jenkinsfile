@@ -30,8 +30,8 @@ pipeline {
 					sh 'pwd'
 					sh 'cat Makefile'
 					sh 'make env'
-					sh 'which python'
-					sh 'which pip'
+					//sh 'which python'
+					//sh 'which pip'
 					sh 'make install'
 					sh 'make lint'
             	}  // see https://stackoverflow.com/a/52372748
