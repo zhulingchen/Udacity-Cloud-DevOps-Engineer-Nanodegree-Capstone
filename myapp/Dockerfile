@@ -1,7 +1,5 @@
 FROM python:3.7.3-stretch
 
-ARG PORT=80
-
 ## Step 1:
 # Create a working directory
 WORKDIR /app
@@ -16,8 +14,8 @@ RUN pip install --trusted-host pypi.python.org -r requirements.txt
 
 ## Step 4:
 # Expose port 80
-EXPOSE $PORT
+EXPOSE 80
 
 ## Step 5:
 # Run gunicorn at container launch
-CMD gunicorn --bind 0.0.0.0:"$PORT" wsgi:app
+CMD ["gunicorn", "-b", "0.0.0.0:80", "wsgi:app"]
