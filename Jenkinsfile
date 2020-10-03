@@ -59,7 +59,7 @@ pipeline {
 		}
 		stage('push docker image') {
 			steps {
-				withDockerRegistry([credentialsId: "3dc42f63-9520-4e9a-82cf-6bf459307d79", url: ""]) {
+				withDockerRegistry([credentialsId: "dockerhub", url: ""]) {
 					sh 'docker tag udacity-cloud-devops-capstone zhulingchen/udacity-cloud-devops-capstone'
 					sh 'docker push zhulingchen/udacity-cloud-devops-capstone'
 				}  // see https://www.brightbox.com/blog/2018/01/22/push-builds-to-dockerhub/
