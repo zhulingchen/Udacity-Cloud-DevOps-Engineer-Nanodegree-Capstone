@@ -69,12 +69,17 @@ pipeline {
 				sh 'docker image ls'
 			}
 		}
-        stage('deply to EKS') {
+        stage('deploy to AWS EKS') {
         	steps {
 				withAWS(credentials: 'aws-credentials', region: 'us-east-2') {
 					sh 'aws eks update-kubeconfig --name udacity-cloud-devops-capstone'
 					sh 'kubectl config use-context arn:aws:eks:us-east-2:732721007089:cluster/udacity-cloud-devops-capstone'
 					sh 'kubectl config current-context'
+					sh 'kubectl apply -f deploy-k8s.yaml'
+					sh 'kubectl get nodes'
+					sh 'kubectl get deployments'
+					sh 'kubectl get pod -o wide'
+					sh 'kubectl get service/simple-web-app'
 				}
         	}
         }
