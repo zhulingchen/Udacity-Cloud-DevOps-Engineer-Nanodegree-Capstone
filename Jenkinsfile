@@ -42,13 +42,21 @@ pipeline {
             steps {
             	dir("myapp"){
 	            	sh 'docker build --tag=udacity-cloud-devops-capstone .'
-	            	sh 'docker image ls'
             	}
-				echo 'test the docker container'
+            }
+        }
+		stage('test the docker container') {
+			steps {
+				sh 'docker image ls'
+				sh 'docker container ls'
 				sh 'docker run -d -p 8000:80 udacity-cloud-devops-capstone'
 				sh 'curl http://localhost:8000'
 				sh 'docker stop $(docker ps -a -q)'
-            }
-        }
+				sh 'docker rm -f $(docker ps -a -q)'
+				sh 'docker rmi -f $(docker images -q)'
+				sh 'docker image ls'
+				sh 'docker container ls'
+			}
+		}
     }
 }
