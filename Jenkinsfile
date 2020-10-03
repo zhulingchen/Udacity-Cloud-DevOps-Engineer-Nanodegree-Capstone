@@ -62,7 +62,7 @@ pipeline {
 				withDockerRegistry([credentialsId: "dockerhub", url: ""]) {
 					sh 'docker tag udacity-cloud-devops-capstone zhulingchen/udacity-cloud-devops-capstone'
 					sh 'docker push zhulingchen/udacity-cloud-devops-capstone'
-				}  // see https://www.brightbox.com/blog/2018/01/22/push-builds-to-dockerhub/
+				}  // see https://devops4solutions.com/publish-docker-image-to-dockerhub-using-jenkins-pipeline/
 				sh 'docker rmi -f $(docker images -q)'
 				sh 'docker image ls'
 			}
