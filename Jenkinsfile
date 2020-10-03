@@ -44,6 +44,10 @@ pipeline {
 	            	sh 'docker build --tag=udacity-cloud-devops-capstone .'
 	            	sh 'docker image ls'
             	}
+				echo 'test the docker container'
+				sh 'docker run -d -p 8000:80 udacity-cloud-devops-capstone'
+				sh 'curl http://localhost:8000'
+				sh 'docker stop $(docker ps -a -q)'
             }
         }
     }
