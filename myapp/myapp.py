@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def hello():
-    return "<h1 style='color:blue'>Hello World!</h1>"
+    return "<h1 style='color:blue'>Hello World!<br>This is Lingchen Zhu's Udacity Cloud DevOps Engineer Capstone Project.</h1>"
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=80, debug=True) # specify port=80

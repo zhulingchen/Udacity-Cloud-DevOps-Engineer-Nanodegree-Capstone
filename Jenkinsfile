@@ -67,6 +67,7 @@ pipeline {
 				}  // see https://devops4solutions.com/publish-docker-image-to-dockerhub-using-jenkins-pipeline/
 				sh 'docker rmi -f $(docker images -q)'
 				sh 'docker image ls'
+				//sh 'docker system prune'
 			}
 		}
         stage('deploy to AWS EKS') {
@@ -80,6 +81,13 @@ pipeline {
 					sh 'kubectl get deployments'
 					sh 'kubectl get pod -o wide'
 					sh 'kubectl get service/simple-web-app'
+				}
+        	}
+        }
+        stage('check rollout') {
+        	steps {
+				withAWS(credentials: 'aws-credentials', region: 'us-east-2') {
+					sh "kubectl rollout status deployments/simple-web-app"
 				}
         	}
         }
