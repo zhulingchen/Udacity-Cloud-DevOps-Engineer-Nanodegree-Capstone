@@ -20,4 +20,4 @@ EXPOSE $PORT
 
 ## Step 5:
 # Run gunicorn at container launch
-CMD gunicorn --bind 0.0.0.0:$PORT wsgi:app
+CMD gunicorn --bind 0.0.0.0:"$PORT" wsgi:app
