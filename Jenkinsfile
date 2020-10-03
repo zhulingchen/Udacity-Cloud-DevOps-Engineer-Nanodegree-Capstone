@@ -86,7 +86,7 @@ pipeline {
         }
 		stage('verify deployment') {
 			steps {
-				sh 'curl a3be985bd49c14b95baa05a2e779c813-50024154.us-east-2.elb.amazonaws.com:8080'
+				sh 'curl a6ec594ed4e9347f380cd52b3e8ff232-1096061640.us-east-2.elb.amazonaws.com:8080'
 			}
 		}
         stage('check rollout') {
@@ -96,12 +96,12 @@ pipeline {
 				}
         	}
         }
-		stage('stop the running pods') {
-			steps {
-				withAWS(credentials: 'aws-credentials', region: 'us-east-2') {
-					sh "kubectl delete -f deploy-k8s.yml"
-				}
-			}
-		}
+		//stage('stop the running pods') {
+		//	steps {
+		//		withAWS(credentials: 'aws-credentials', region: 'us-east-2') {
+		//			sh "kubectl delete -f deploy-k8s.yml"
+		//		}
+		//	}
+		//}
     }
 }
