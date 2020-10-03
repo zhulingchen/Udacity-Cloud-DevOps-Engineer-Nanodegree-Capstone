@@ -50,6 +50,7 @@ pipeline {
 				sh 'docker image ls'
 				sh 'docker container ls'
 				sh 'docker run -d -p 8000:80 udacity-cloud-devops-capstone'
+				sh 'sleep 2'
 				sh 'curl http://localhost:8000'
 				sh 'docker stop $(docker ps -a -q)'
 				sh 'docker rm -f $(docker ps -a -q)'
