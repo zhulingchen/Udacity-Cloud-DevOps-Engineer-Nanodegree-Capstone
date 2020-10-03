@@ -16,11 +16,13 @@ pipeline {
 				}  // see https://stackoverflow.com/a/51688905
             }
         }
-        stage('verify aws-cli v2') {
+        stage('verify aws-cli v2, eksctl, kubectl') {
         	steps {
 				withAWS(credentials: 'aws-credentials', region: 'us-east-2') {
 					sh 'aws --version'
 				    sh 'aws iam get-user'
+					sh 'eksctl version'
+					sh 'kubectl version --short --client'
 				}  // see https://support.cloudbees.com/hc/en-us/articles/360027893492-How-To-Authenticate-to-AWS-with-the-Pipeline-AWS-Plugin
         	}
         }
