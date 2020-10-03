@@ -19,5 +19,5 @@ RUN pip install --trusted-host pypi.python.org -r requirements.txt
 EXPOSE $PORT
 
 ## Step 5:
-# Run app.py at container launch
-CMD ["python", "myapp.py"]
+# Run gunicorn at container launch
+CMD gunicorn --bind 0.0.0.0:$PORT wsgi:app
