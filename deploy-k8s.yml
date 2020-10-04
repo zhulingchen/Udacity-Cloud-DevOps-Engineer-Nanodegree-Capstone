@@ -31,6 +31,7 @@ spec:
       containers:
         - name: simple-web-app
           image: zhulingchen/udacity-cloud-devops-capstone
+          imagePullPolicy: "Always"
           ports:
             - containerPort: 80
           resources:

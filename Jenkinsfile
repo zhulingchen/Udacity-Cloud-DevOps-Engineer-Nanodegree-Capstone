@@ -76,8 +76,9 @@ pipeline {
 					sh 'aws eks update-kubeconfig --name udacity-cloud-devops-capstone'
 					sh 'kubectl config use-context arn:aws:eks:us-east-2:732721007089:cluster/udacity-cloud-devops-capstone'
 					sh 'kubectl config current-context'
-					sh 'kubectl delete -f deploy-k8s.yml'  // https://stackoverflow.com/a/41095466
+					//sh 'kubectl delete -f deploy-k8s.yml'  // https://stackoverflow.com/a/41095466
 					sh 'kubectl apply -f deploy-k8s.yml'
+					sh 'kubectl rollout restart deployments/simple-web-app'
 					sh 'sleep 90'
 					sh 'kubectl get nodes'
 					sh 'kubectl get deployments'
@@ -102,7 +103,7 @@ pipeline {
         stage('check rollout') {
         	steps {
 				withAWS(credentials: 'aws-credentials', region: 'us-east-2') {
-					sh "kubectl rollout status deployments/simple-web-app"
+					sh 'kubectl rollout status deployments/simple-web-app'
 				}
         	}
         }
