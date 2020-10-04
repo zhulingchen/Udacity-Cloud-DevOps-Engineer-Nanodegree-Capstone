@@ -52,7 +52,7 @@ pipeline {
 				sh 'docker image ls'
 				sh 'docker container ls'
 				sh 'docker run -d -p 8000:80 udacity-cloud-devops-capstone'
-				sh 'sleep 2'
+				sh 'sleep 1'
 				sh 'curl http://localhost:8000'
 				sh 'docker stop $(docker ps -a -q)'
 				sh 'docker rm -f $(docker ps -a -q)'
@@ -76,7 +76,9 @@ pipeline {
 					sh 'aws eks update-kubeconfig --name udacity-cloud-devops-capstone'
 					sh 'kubectl config use-context arn:aws:eks:us-east-2:732721007089:cluster/udacity-cloud-devops-capstone'
 					sh 'kubectl config current-context'
+					sh 'kubectl delete -f deploy-k8s.yml'  // https://stackoverflow.com/a/41095466
 					sh 'kubectl apply -f deploy-k8s.yml'
+					sh 'sleep 60'
 					sh 'kubectl get nodes'
 					sh 'kubectl get deployments'
 					sh 'kubectl get pod -o wide'
