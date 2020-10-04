@@ -20,8 +20,9 @@ pipeline {
 				}  // see https://stackoverflow.com/a/51688905
             }
         }
-        stage('verify aws-cli v2, eksctl, kubectl') {
+        stage('verify ansible, aws-cli v2, eksctl, kubectl') {
         	steps {
+				sh 'ansible --version'
 				withAWS(credentials: 'aws-credentials', region: 'us-east-2') {
 					sh 'aws --version'
 				    sh 'aws iam get-user'
