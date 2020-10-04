@@ -7,7 +7,7 @@ app = Flask(__name__)
 @app.route("/")
 def hello():
     browser_str = "<h1 style='color:blue'>Hello World!<br>" \
-                  "This is Lingchen Zhu's Udacity Cloud DevOps Engineer Capstone Project.<br>Test<br>" \
+                  "This is Lingchen Zhu's Udacity Cloud DevOps Engineer Capstone Project.<br>" \
                   "Built on Flask and Gunicorn</h1>"
     return browser_str
 
