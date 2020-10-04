@@ -74,7 +74,13 @@ pipeline {
         	steps {
 				withAWS(credentials: 'aws-credentials', region: 'us-east-2') {
 					sh 'aws eks update-kubeconfig --name udacity-cloud-devops-capstone'
-					sh 'kubectl config use-context arn:aws:eks:us-east-2:732721007089:cluster/udacity-cloud-devops-capstone'
+					script {
+						def EKS_ARN = sh(
+							script: 'aws cloudformation list-exports --query "Exports[?Name=='eksctl-udacity-cloud-devops-capstone-cluster::ARN'].Value" --output text',
+							returnStdout: true
+						).trim()
+						sh "kubectl config use-context ${EKS_ARN}"
+					}
 					sh 'kubectl config current-context'
 					//sh 'kubectl delete -f deploy-k8s.yml'  // https://stackoverflow.com/a/41095466
 					sh 'kubectl apply -f deploy-k8s.yml'
@@ -107,12 +113,5 @@ pipeline {
 				}
         	}
         }
-		//stage('stop the running pods') {
-		//	steps {
-		//		withAWS(credentials: 'aws-credentials', region: 'us-east-2') {
-		//			sh "kubectl delete -f deploy-k8s.yml"
-		//		}
-		//	}
-		//}
     }
 }
