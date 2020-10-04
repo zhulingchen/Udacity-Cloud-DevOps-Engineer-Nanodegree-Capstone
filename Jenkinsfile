@@ -88,7 +88,7 @@ pipeline {
 			steps {
 				withAWS(credentials: 'aws-credentials', region: 'us-east-2') {
 					sh """
-					export EKS_HOSTNAME=$(kubectl get svc simple-web-app -o jsonpath=\\"{.status.loadBalancer.ingress[*].hostname}\\")
+					export EKS_HOSTNAME=$(kubectl get svc simple-web-app -o jsonpath={.status.loadBalancer.ingress[*].hostname})
 					curl ${EKS_HOSTNAME}:8080
 					"""
 				}
