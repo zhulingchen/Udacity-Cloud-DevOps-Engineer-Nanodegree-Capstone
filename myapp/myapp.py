@@ -9,7 +9,7 @@ def hello():
     browser_str = "<h1 style='color:blue'>Hello World!<br>" \
                   "This is Lingchen Zhu's Udacity Cloud DevOps Engineer Capstone Project.<br>" \
                   "Built on Flask and Gunicorn</h1>"
-    return browser_str
+    return browser_str0
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=80, debug=True) # specify port=80
