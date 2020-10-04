@@ -76,7 +76,7 @@ pipeline {
 					sh 'aws eks update-kubeconfig --name udacity-cloud-devops-capstone'
 					script {
 						def EKS_ARN = sh(
-							script: 'aws cloudformation list-exports --query "Exports[?Name=='eksctl-udacity-cloud-devops-capstone-cluster::ARN'].Value" --output text',
+							script: "aws cloudformation list-exports --query \\"Exports[?Name=='eksctl-udacity-cloud-devops-capstone-cluster::ARN'].Value\\" --output text",
 							returnStdout: true
 						).trim()
 						sh "kubectl config use-context ${EKS_ARN}"
