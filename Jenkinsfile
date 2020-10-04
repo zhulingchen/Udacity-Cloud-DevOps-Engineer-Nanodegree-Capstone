@@ -78,7 +78,7 @@ pipeline {
 					sh 'kubectl config current-context'
 					sh 'kubectl delete -f deploy-k8s.yml'  // https://stackoverflow.com/a/41095466
 					sh 'kubectl apply -f deploy-k8s.yml'
-					sh 'sleep 60'
+					sh 'sleep 90'
 					sh 'kubectl get nodes'
 					sh 'kubectl get deployments'
 					sh 'kubectl get pod -o wide'
