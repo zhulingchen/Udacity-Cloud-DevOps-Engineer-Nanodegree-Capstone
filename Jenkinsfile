@@ -3,7 +3,11 @@ pipeline {
 	agent {
 		label 'jenkins-agent-1'
 	}  // add a new agent: https://medium.com/@_oleksii_/how-to-deploy-jenkins-agent-and-connect-it-to-jenkins-master-in-microsoft-azure-ffeb085957c0
-    stages {
+    environment {
+        EKS_CLUSTER_NAME = 'udacity-cloud-devops-capstone'
+		DOCKER_IMAGE_NAME = 'udacity-cloud-devops-capstone'
+    }
+	stages {
         stage('verify the build system') {
             steps {
             	sh 'pwd'
@@ -43,7 +47,7 @@ pipeline {
         stage('build docker image') {
             steps {
             	dir("myapp"){
-	            	sh 'docker build --tag=udacity-cloud-devops-capstone .'
+	            	sh 'docker build --tag=${DOCKER_IMAGE_NAME} .'
             	}
             }
         }
@@ -51,7 +55,7 @@ pipeline {
 			steps {
 				sh 'docker image ls'
 				sh 'docker container ls'
-				sh 'docker run -d -p 8000:80 udacity-cloud-devops-capstone'
+				sh 'docker run -d -p 8000:80 ${DOCKER_IMAGE_NAME}'
 				sh 'sleep 1'
 				sh 'curl http://localhost:8000'
 				sh 'docker stop $(docker ps -a -q)'
@@ -62,8 +66,8 @@ pipeline {
 		stage('push docker image') {
 			steps {
 				withDockerRegistry([credentialsId: "dockerhub", url: ""]) {
-					sh 'docker tag udacity-cloud-devops-capstone zhulingchen/udacity-cloud-devops-capstone'
-					sh 'docker push zhulingchen/udacity-cloud-devops-capstone'
+					sh 'docker tag ${DOCKER_IMAGE_NAME} zhulingchen/${DOCKER_IMAGE_NAME}'
+					sh 'docker push zhulingchen/${DOCKER_IMAGE_NAME}'
 				}  // see https://devops4solutions.com/publish-docker-image-to-dockerhub-using-jenkins-pipeline/
 				sh 'docker rmi -f $(docker images -q)'
 				sh 'docker image ls'
@@ -73,10 +77,10 @@ pipeline {
         stage('deploy to AWS EKS') {
         	steps {
 				withAWS(credentials: 'aws-credentials', region: 'us-east-2') {
-					sh 'aws eks update-kubeconfig --name udacity-cloud-devops-capstone'
+					sh 'aws eks update-kubeconfig --name ${EKS_CLUSTER_NAME}'
 					script {
 						def EKS_ARN = sh(
-							script: "aws cloudformation list-exports --query \"Exports[?Name=='eksctl-udacity-cloud-devops-capstone-cluster::ARN'].Value\" --output text",
+							script: "aws cloudformation list-exports --query \"Exports[?Name=='eksctl-${EKS_CLUSTER_NAME}-cluster::ARN'].Value\" --output text",
 							returnStdout: true
 						).trim()
 						sh "kubectl config use-context ${EKS_ARN}"
