@@ -85,12 +85,10 @@ pipeline {
         	}
         }
 		stage('verify deployment') {
-			steps {
+			script {
 				withAWS(credentials: 'aws-credentials', region: 'us-east-2') {
-					sh """
-					export EKS_HOSTNAME=$(kubectl get svc simple-web-app -o jsonpath={.status.loadBalancer.ingress[*].hostname})
-					curl ${EKS_HOSTNAME}:8080
-					"""
+					EKS_HOSTNAME = sh(script: 'kubectl get svc simple-web-app -o jsonpath="{.status.loadBalancer.ingress[*].hostname}"', returnStatus: true) == 0
+					sh 'curl ${EKS_HOSTNAME}:8080'
 				}
 			}
 		}
