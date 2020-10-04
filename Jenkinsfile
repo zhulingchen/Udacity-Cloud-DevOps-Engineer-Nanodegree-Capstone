@@ -92,8 +92,7 @@ pipeline {
 							script: 'kubectl get svc simple-web-app -o jsonpath="{.status.loadBalancer.ingress[*].hostname}"',
 							returnStdout: true
 							).trim()
-						echo "EKS_HOSTNAME = ${EKS_HOSTNAME}"
-						sh 'curl ${EKS_HOSTNAME}:8080'
+						sh "curl ${EKS_HOSTNAME}:8080"  // see https://stackoverflow.com/a/40078286
 					}
 				}
 			}
