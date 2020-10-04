@@ -85,8 +85,9 @@ pipeline {
         	}
         }
 		stage('verify deployment') {
-			steps {
-				sh 'curl a6ec594ed4e9347f380cd52b3e8ff232-1096061640.us-east-2.elb.amazonaws.com:8080'
+			withAWS(credentials: 'aws-credentials', region: 'us-east-2') {
+				sh 'export EKS_HOSTNAME=$(kubectl get svc simple-web-app -o jsonpath="{.status.loadBalancer.ingress[*].hostname}")'
+				sh 'curl ${EKS_HOSTNAME}:8080'
 			}
 		}
         stage('check rollout') {
