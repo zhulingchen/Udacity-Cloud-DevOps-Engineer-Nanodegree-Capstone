@@ -90,8 +90,8 @@ pipeline {
 					script {
 						def EKS_HOSTNAME = sh(
 							script: 'kubectl get svc simple-web-app -o jsonpath="{.status.loadBalancer.ingress[*].hostname}"',
-							returnStatus: true
-							)
+							returnStdout: true
+							).trim()
 						echo "EKS_HOSTNAME = ${EKS_HOSTNAME}"
 						sh 'curl ${EKS_HOSTNAME}:8080'
 					}
