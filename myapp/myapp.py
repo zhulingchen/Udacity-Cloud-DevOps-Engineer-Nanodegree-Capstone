@@ -8,7 +8,7 @@ app = Flask(__name__)
 def hello():
     browser_str = "<h1 style='color:blue'>Hello World!<br>" \
                   "This is Lingchen Zhu's Udacity Cloud DevOps Engineer Capstone Project.<br>" \
-                  "Build with Flask and Gunicorn</h1>"
+                  "Built on Flask and Gunicorn</h1>"
     return browser_str
 
 if __name__ == "__main__":
