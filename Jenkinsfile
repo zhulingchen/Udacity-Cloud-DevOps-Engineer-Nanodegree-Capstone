@@ -100,7 +100,8 @@ pipeline {
                                                   --node-ami auto \
                                                   --region ${AWS_REGION}
                             """
-                            sh 'sleep 2m'  // wait for creation
+                            sh 'sleep 60s'  // wait for creation
+                            // update the value of EKS_ARN after the cluster is created
                             EKS_ARN = sh(
                                 script: "aws cloudformation list-exports --query \"Exports[?Name=='eksctl-${EKS_CLUSTER_NAME}-cluster::ARN'].Value\" --output text",
                                 returnStdout: true
