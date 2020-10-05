@@ -24,8 +24,7 @@ pipeline {
         stage('verify aws-cli v2, eksctl, kubectl') {
             steps {
                 //sh 'ansible --version'
-                echo "${AWS_REGION}"
-                withAWS(credentials: 'aws-credentials', region: '${AWS_REGION}') {
+                withAWS(credentials: 'aws-credentials', region: "${AWS_REGION}") {
                     sh 'aws --version'
                     sh 'aws iam get-user'
                     sh 'eksctl version'
@@ -79,7 +78,7 @@ pipeline {
         }
         stage('deploy to AWS EKS') {
             steps {
-                withAWS(credentials: 'aws-credentials', region: '${AWS_REGION}') {
+                withAWS(credentials: 'aws-credentials', region: "${AWS_REGION}") {
                     script {
                         // determine whether the AWS EKS cluster ARN exists
                         def EKS_ARN = sh(
@@ -108,7 +107,7 @@ pipeline {
         }
         stage('verify deployment') {
             steps {
-                withAWS(credentials: 'aws-credentials', region: '${AWS_REGION}') {
+                withAWS(credentials: 'aws-credentials', region: "${AWS_REGION}") {
                     script {
                         def EKS_HOSTNAME = sh(
                             script: 'kubectl get svc simple-web-app -o jsonpath="{.status.loadBalancer.ingress[*].hostname}"',
@@ -121,7 +120,7 @@ pipeline {
         }
         stage('check rollout') {
             steps {
-                withAWS(credentials: 'aws-credentials', region: '${AWS_REGION}') {
+                withAWS(credentials: 'aws-credentials', region: "${AWS_REGION}") {
                     sh 'kubectl rollout status deployments/simple-web-app'
                 }
             }
