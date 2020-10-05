@@ -16,12 +16,12 @@ As a capstone project, the directions are rather more open-ended than they were 
 
 * Create an AWS EC2 instance for Jenkins server and another AWS EC2 instance for a Jenkins agent
     * The Jenkins server itself is the "master" agent for build pipelines, so having another AWS EC2 instance as a Jenkins agent is optional.
-    * After installing the Jenkins server, install necessary plugins such as Blue Ocean, Pipeline: AWS Steps, and Docker Pipeline
+    * After installing the Jenkins server, install necessary plugins such as Blue Ocean, Pipeline: AWS Steps, and Docker Pipeline.
     * Add credentials of Jenkins agent(s)' SSH private key(s), AWS, and dockerhub.
     * Do not forget to associate Elastic IP addresses to both two instances.
     * [Add a new Jenkins agent](https://medium.com/@_oleksii_/how-to-deploy-jenkins-agent-and-connect-it-to-jenkins-master-in-microsoft-azure-ffeb085957c0)
-    * The Linux user `jenkins` needs to be added to the group `docker`: `sudo usermod -a -G docker jenkins`
-    * Install docker, hadolint, aws-cli, eksctl, kubectl, and other necessary system-level utilities in the Jenkins build agent(s)
+    * The Linux user `jenkins` needs to be added to the group `docker`: `sudo usermod -a -G docker jenkins`.
+    * Install docker, hadolint, aws-cli, eksctl, kubectl, and other necessary system-level utilities in the Jenkins build agent(s).
 
 * Use [Jenkinsfile](./Jenkinsfile) to build a Declarative Pipeline
     * [Validate Jenkinfiles in VSCode](https://llu.is/validate-jenkinfiles-in-vscode/)
