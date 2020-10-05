@@ -20,7 +20,8 @@ As a capstone project, the directions are rather more open-ended than they were 
     * Add credentials of Jenkins agent(s)' SSH private key(s), AWS, and dockerhub.
     * Do not forget to associate Elastic IP addresses to both two instances.
     * [Add a new Jenkins agent](https://medium.com/@_oleksii_/how-to-deploy-jenkins-agent-and-connect-it-to-jenkins-master-in-microsoft-azure-ffeb085957c0)
-    * The Linux user `jenkins` needs to be added to the group `docker`: `sudo usermod -a -G docker jenkins`.
+    * The Linux user `jenkins` needs to be added to the group `docker`.
+        * `sudo usermod -a -G docker jenkins`
     * Install docker, hadolint, aws-cli, eksctl, kubectl, and other necessary system-level utilities in the Jenkins build agent(s).
 
 * Use [Jenkinsfile](./Jenkinsfile) to build a Declarative Pipeline
