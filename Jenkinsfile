@@ -1,5 +1,6 @@
 // The user jenkins needs to be added to the group docker: sudo usermod -a -G docker jenkins
 // use double quotes to reference variables
+// Validate Jenkinfiles in VSCode: https://llu.is/validate-jenkinfiles-in-vscode/
 pipeline {
     agent {
         label 'jenkins-agent-1'
