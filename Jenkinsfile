@@ -1,4 +1,5 @@
 // The user jenkins needs to be added to the group docker: sudo usermod -a -G docker jenkins
+// use double quotes to reference variables
 pipeline {
     agent {
         label 'jenkins-agent-1'
