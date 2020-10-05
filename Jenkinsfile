@@ -100,7 +100,7 @@ pipeline {
                                                   --node-ami auto \
                                                   --region ${AWS_REGION}
                             """
-                            sh 'sleep 60s'  // wait for creation
+                            sh 'sleep 3m'  // wait for creation
                         }
                         sh 'aws eks update-kubeconfig --name ${EKS_CLUSTER_NAME}'
                         sh "kubectl config use-context ${EKS_ARN}"
