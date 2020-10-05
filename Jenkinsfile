@@ -89,8 +89,18 @@ pipeline {
                         ).trim()
                         // create the AWS EKS cluster by eksctl if its ARN does not exist
                         if (EKS_ARN.isEmpty()) {
-                            sh 'eksctl create cluster --name ${EKS_CLUSTER_NAME} --version 1.16 --nodegroup-name standard-workers --node-type t2.medium --nodes 2 --nodes-min 1 --nodes-max 2 --node-ami auto --region us-east-2'
-                            sh 'sleep 10m'  // wait for creation
+                            sh """
+                            eksctl create cluster --name ${EKS_CLUSTER_NAME} \
+                                                  --version 1.17 \
+                                                  --nodegroup-name standard-workers \
+                                                  --node-type t2.medium \
+                                                  --nodes 2 \
+                                                  --nodes-min 1 \
+                                                  --nodes-max 2 \
+                                                  --node-ami auto \
+                                                  --region ${AWS_REGION}
+                            """
+                            sh 'sleep 60s'  // wait for creation
                         }
                         sh 'aws eks update-kubeconfig --name ${EKS_CLUSTER_NAME}'
                         sh "kubectl config use-context ${EKS_ARN}"
