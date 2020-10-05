@@ -4,6 +4,7 @@ pipeline {
         label 'jenkins-agent-1'
     }  // add a new agent: https://medium.com/@_oleksii_/how-to-deploy-jenkins-agent-and-connect-it-to-jenkins-master-in-microsoft-azure-ffeb085957c0
     environment {
+        AWS_REGION = 'us-east-2'
         EKS_CLUSTER_NAME = 'udacity-cloud-devops-capstone'
         DOCKER_IMAGE_NAME = 'udacity-cloud-devops-capstone'
     }
@@ -23,7 +24,7 @@ pipeline {
         stage('verify ansible, aws-cli v2, eksctl, kubectl') {
             steps {
                 sh 'ansible --version'
-                withAWS(credentials: 'aws-credentials', region: 'us-east-2') {
+                withAWS(credentials: 'aws-credentials', region: ${AWS_REGION}) {
                     sh 'aws --version'
                     sh 'aws iam get-user'
                     sh 'eksctl version'
@@ -57,7 +58,7 @@ pipeline {
                 sh 'docker image ls'
                 sh 'docker container ls'
                 sh 'docker run -d -p 8000:80 ${DOCKER_IMAGE_NAME}'
-                sh 'sleep 1'
+                sh 'sleep 1s'
                 sh 'curl http://localhost:8000'
                 sh 'docker stop $(docker ps -a -q)'
                 sh 'docker rm -f $(docker ps -a -q)'
@@ -77,20 +78,26 @@ pipeline {
         }
         stage('deploy to AWS EKS') {
             steps {
-                withAWS(credentials: 'aws-credentials', region: 'us-east-2') {
-                    sh 'aws eks update-kubeconfig --name ${EKS_CLUSTER_NAME}'
+                withAWS(credentials: 'aws-credentials', region: ${AWS_REGION}) {
                     script {
+                        // determine whether the AWS EKS cluster ARN exists
                         def EKS_ARN = sh(
                             script: "aws cloudformation list-exports --query \"Exports[?Name=='eksctl-${EKS_CLUSTER_NAME}-cluster::ARN'].Value\" --output text",
                             returnStdout: true
                         ).trim()
+                        // create the AWS EKS cluster by eksctl if its ARN does not exist
+                        if (EKS_ARN.isEmpty()) {
+                            sh 'eksctl create cluster --name ${EKS_CLUSTER_NAME} --version 1.16 --nodegroup-name standard-workers --node-type t2.medium --nodes 2 --nodes-min 1 --nodes-max 2 --node-ami auto --region us-east-2'
+                            sh 'sleep 15m'  // wait for creation
+                        }
+                        sh 'aws eks update-kubeconfig --name ${EKS_CLUSTER_NAME}'
                         sh "kubectl config use-context ${EKS_ARN}"
                     }
                     sh 'kubectl config current-context'
                     //sh 'kubectl delete -f deploy-k8s.yml'  // https://stackoverflow.com/a/41095466
                     sh 'kubectl apply -f deploy-k8s.yml'
                     sh 'kubectl rollout restart deployments/simple-web-app'
-                    sh 'sleep 90'
+                    sh 'sleep 60s'  // wait for image pulling
                     sh 'kubectl get nodes'
                     sh 'kubectl get deployments'
                     sh 'kubectl get pod -o wide'
@@ -100,7 +107,7 @@ pipeline {
         }
         stage('verify deployment') {
             steps {
-                withAWS(credentials: 'aws-credentials', region: 'us-east-2') {
+                withAWS(credentials: 'aws-credentials', region: ${AWS_REGION}) {
                     script {
                         def EKS_HOSTNAME = sh(
                             script: 'kubectl get svc simple-web-app -o jsonpath="{.status.loadBalancer.ingress[*].hostname}"',
@@ -113,7 +120,7 @@ pipeline {
         }
         stage('check rollout') {
             steps {
-                withAWS(credentials: 'aws-credentials', region: 'us-east-2') {
+                withAWS(credentials: 'aws-credentials', region: ${AWS_REGION}) {
                     sh 'kubectl rollout status deployments/simple-web-app'
                 }
             }
