@@ -114,7 +114,7 @@ pipeline {
                     //sh 'kubectl delete -f deploy-k8s.yml'  // https://stackoverflow.com/a/41095466
                     sh 'kubectl apply -f deploy-k8s.yml'
                     sh 'kubectl rollout restart deployments/simple-web-app'
-                    sh 'sleep 60s'  // wait for image pulling
+                    sh 'sleep 2m'  // wait for image pulling
                     sh 'kubectl get nodes'
                     sh 'kubectl get deployments'
                     sh 'kubectl get pod -o wide'
